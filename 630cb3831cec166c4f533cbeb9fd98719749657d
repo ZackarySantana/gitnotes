@@ -1,0 +1,1 @@
+{"title":"Scaffold review: types + package stub","gitnotes":1,"type":"markdown","body":"Clean bootstrap — no logic yet.\n\n- [x] `Envelope` matches schema v1 from `PLAN.md`\n- [x] `ParseResult` discriminated union ready for parser\n- [ ] Wire tokenizer next\n\n> Low risk. Safe to land as the demo branch root."}

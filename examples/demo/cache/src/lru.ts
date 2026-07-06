@@ -29,23 +29,32 @@ export class LRUCache<K, V> {
       return undefined;
     }
     this.hits++;
-    this.store.delete(key);
-    this.store.set(key, value);
+    this.touch(key, value);
     return value;
   }
 
   set(key: K, value: V): void {
     if (this.store.has(key)) {
-      this.store.delete(key);
-    } else if (this.store.size >= this.maxSize) {
-      const oldest = this.store.keys().next().value;
-      if (oldest !== undefined) {
-        const evicted = this.store.get(oldest);
-        this.store.delete(oldest);
-        this.onEvict?.(String(oldest), evicted);
-      }
+      this.touch(key, value);
+      return;
+    }
+    if (this.store.size >= this.maxSize) {
+      this.evictOldest();
     }
     this.store.set(key, value);
+  }
+
+  private touch(key: K, value: V): void {
+    this.store.delete(key);
+    this.store.set(key, value);
+  }
+
+  private evictOldest(): void {
+    const oldest = this.store.keys().next().value;
+    if (oldest === undefined) return;
+    const evicted = this.store.get(oldest);
+    this.store.delete(oldest);
+    this.onEvict?.(String(oldest), evicted);
   }
 
   stats(): CacheStats {

@@ -1,0 +1,10 @@
+{
+  "name": "@gitnotes/demo-parser",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Demo envelope parser + markdown utilities for GitNotes screenshots",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "node --test tests/"
+  }
+}

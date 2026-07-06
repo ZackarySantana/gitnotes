@@ -1,0 +1,15 @@
+Env overrides: precedence rationale for reviewers
+
+When both a config file and environment variables set the same key, ENV wins. Order of application:
+
+  1. DEFAULT_CONFIG (types.ts)
+  2. JSON file via loadConfig()
+  3. applyEnvOverrides() — GITNOTES_CLI_* prefix
+
+Why ENV last: matches twelve-factor expectations for deploy-time secrets and one-off overrides without editing files on disk. The demo uses GITNOTES_CLI_VERBOSE and GITNOTES_CLI_OUTPUT; names are verbose on purpose to avoid collisions with user shell profile.
+
+Tradeoff we accepted: no nested key support (GITNOTES_CLI_FOO__BAR). Flat map only keeps the implementation at ~25 lines. Nested env mapping is deferred — see issue #42 comment thread.
+
+Where to look: applyEnvOverrides() in env.ts, called from cli.ts after loadConfig.
+
+Risk: typos in env names silently no-op. Commit 30 adds a debug log when GITNOTES_CLI_DEBUG=1.

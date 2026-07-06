@@ -30,3 +30,7 @@ async function getBlob(sha: string): Promise<Blob> {
 ```
 
 Run `npm test` and `npm run bench` from this directory.
+
+## Status
+
+Feature-complete for demo — all modules exported from `src/index.ts`.

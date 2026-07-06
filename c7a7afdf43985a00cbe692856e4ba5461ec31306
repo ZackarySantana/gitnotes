@@ -1,0 +1,3 @@
+Unit tests land for args + config
+
+Quick review: tests/args.test.ts covers help and default command; tests/config.test.ts checks missing file fallback. Run with npm test once package.json scripts wired. Low risk.

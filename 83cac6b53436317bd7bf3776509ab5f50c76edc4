@@ -1,0 +1,1 @@
+{"title":"Test coverage snapshot","gitnotes":1,"type":"markdown","body":"Lightweight test harness (no jest) — functions throw on failure.\n\n- [x] EOF path from commit 05\n- [x] Trailing whitespace regression\n- [x] Bold + strip helpers\n- [ ] Parser integration tests deferred\n\nFive tests total — enough for demo screenshots."}

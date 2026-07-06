@@ -23,3 +23,8 @@ export interface Token {
   line: number;
   column: number;
 }
+
+/** Parser options — reserved for strict mode later. */
+export interface ParseOptions {
+  requireTitleFirst?: boolean;
+}

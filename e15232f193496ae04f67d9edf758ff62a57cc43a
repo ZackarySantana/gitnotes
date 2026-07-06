@@ -1,0 +1,5 @@
+Post-merge incident: config validation too strict on empty strings
+
+This commit was later found to reject configs where optional fields were set to "" instead of omitted. That broke the demo fixture in examples/demo/cli/fixtures/minimal.json and caused exit code 3 on CI.
+
+Fixed in commit 30 (treat empty string as unset for optional keys). Safe to screenshot but do not copy validateRequired() verbatim into production tooling.

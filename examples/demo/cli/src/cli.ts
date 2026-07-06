@@ -1,11 +1,13 @@
-/** Demo CLI entry — wires args, config, and output. */
+/** Demo CLI entry — wires args, config, env, validation, and output. */
 
-import { parseArgs, printHelp } from './args.js';
+import { parseArgs, printHelp, warnUnknownFlags } from './args.js';
 import { loadConfig } from './config.js';
-import { formatResult } from './output.js';
+import { applyEnvOverrides } from './env.js';
+import { formatJson, formatResult } from './output.js';
+import { validateConfig, ConfigError } from './validate.js';
 import type { ConfigShape } from './types.js';
 
-export function runCommand(command: string, config: ConfigShape): boolean {
+export function runCommand(command: string, _config: ConfigShape): boolean {
   switch (command) {
     case 'status':
       return true;
@@ -15,20 +17,40 @@ export function runCommand(command: string, config: ConfigShape): boolean {
   }
 }
 
-export function main(argv: string[] = process.argv): number {
-  const opts = parseArgs(argv);
-  if (opts.help) {
-    printHelp();
-    return 0;
+function handleError(err: unknown): number {
+  if (err instanceof ConfigError) {
+    console.error(`config error: ${err.message}`);
+    return err.code === 'INVALID_SCHEMA' ? 3 : 4;
   }
-  const config = loadConfig(opts.configPath);
-  const ok = runCommand(opts.command, config);
-  const out = formatResult(
-    { command: opts.command, config, ok },
-    opts.verbose || config.verbose
-  );
-  process.stdout.write(out);
-  return ok ? 0 : 2;
+  console.error(String(err));
+  return 1;
+}
+
+export function main(argv: string[] = process.argv): number {
+  try {
+    const { opts, unknownFlags } = parseArgs(argv);
+    warnUnknownFlags(unknownFlags);
+    if (opts.help) {
+      printHelp();
+      return 0;
+    }
+    let config = loadConfig(opts.configPath);
+    config = applyEnvOverrides(config);
+    if (process.env.GITNOTES_CLI_DEBUG === '1') {
+      console.error('[debug] config after env overrides:', config);
+    }
+    validateConfig(config);
+    const ok = runCommand(opts.command, config);
+    const payload = { command: opts.command, config, ok };
+    const useJson = opts.json || config.output === 'json';
+    const out = useJson
+      ? formatJson(payload)
+      : formatResult(payload, opts.verbose || config.verbose);
+    process.stdout.write(out);
+    return ok ? 0 : 2;
+  } catch (err) {
+    return handleError(err);
+  }
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

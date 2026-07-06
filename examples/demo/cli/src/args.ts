@@ -5,7 +5,16 @@ import { DEFAULT_CONFIG } from './types.js';
 
 const DEFAULT_CONFIG_PATH = '~/.config/gitnotes-cli.json';
 
-export function parseArgs(argv: string[]): CliOptions {
+const KNOWN_FLAGS = new Set([
+  '--help', '-h', '--json', '--verbose', '-v', '--config',
+]);
+
+export interface ParseArgsResult {
+  opts: CliOptions;
+  unknownFlags: string[];
+}
+
+export function parseArgs(argv: string[]): ParseArgsResult {
   const opts: CliOptions = {
     configPath: DEFAULT_CONFIG_PATH,
     json: false,
@@ -14,6 +23,7 @@ export function parseArgs(argv: string[]): CliOptions {
     command: 'status',
     args: [],
   };
+  const unknownFlags: string[] = [];
 
   let i = 2;
   while (i < argv.length) {
@@ -26,6 +36,8 @@ export function parseArgs(argv: string[]): CliOptions {
       opts.verbose = true;
     } else if (arg === '--config' && argv[i + 1]) {
       opts.configPath = argv[++i];
+    } else if (arg.startsWith('-') && !KNOWN_FLAGS.has(arg)) {
+      unknownFlags.push(arg);
     } else if (!arg.startsWith('-')) {
       opts.command = arg;
       opts.args = argv.slice(i + 1);
@@ -33,7 +45,13 @@ export function parseArgs(argv: string[]): CliOptions {
     }
     i++;
   }
-  return opts;
+  return { opts, unknownFlags };
+}
+
+export function warnUnknownFlags(flags: string[]): void {
+  for (const flag of flags) {
+    console.error(`warning: unknown flag ${flag}`);
+  }
 }
 
 export function printHelp(): void {

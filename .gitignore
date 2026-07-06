@@ -2,3 +2,4 @@ node_modules/
 dist/
 test/.envelope.bundle.mjs
 *.log
+.demo-staging/

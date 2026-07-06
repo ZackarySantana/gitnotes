@@ -4,6 +4,10 @@ Chrome extension that surfaces `git notes` on GitHub commit pages. GitHub hosts
 pushed `refs/notes/*` refs but stopped rendering them — GitNotes fetches them
 via the GitHub API and renders them in place.
 
+## Privacy
+
+GitNotes stores its cache/history in your browser and only sends API requests to GitHub. See the full policy in [PRIVACY.md](PRIVACY.md).
+
 See [PLAN.md](PLAN.md) for the full design (schema, Hub, roadmap) and
 [skills/gitnotes/SKILL.md](skills/gitnotes/SKILL.md) for the agent skill that
 writes notes.

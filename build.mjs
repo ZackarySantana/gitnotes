@@ -2,10 +2,12 @@ import * as esbuild from 'esbuild'
 import { cpSync, mkdirSync } from 'node:fs'
 
 const watch = process.argv.includes('--watch')
+const prod = process.argv.includes('--prod')
 
 const common = {
   bundle: true,
-  sourcemap: true,
+  sourcemap: !prod,
+  minify: prod,
   target: 'chrome110',
   logLevel: 'info',
   outdir: 'dist',
@@ -35,6 +37,7 @@ function copyStatic() {
   cpSync('src/hub/hub.html', 'dist/hub.html')
   cpSync('src/hub/hub.css', 'dist/hub.css')
   cpSync('src/sandbox/sandbox.html', 'dist/sandbox.html')
+  cpSync('src/icons', 'dist/icons', { recursive: true })
 }
 
 if (watch) {

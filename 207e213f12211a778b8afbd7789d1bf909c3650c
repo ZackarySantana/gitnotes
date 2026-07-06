@@ -1,0 +1,1 @@
+{"title":"Scaffold review: CLI module bootstrap","gitnotes":1,"type":"text","body":"What changed: package stub, shared types, README skeleton under examples/demo/cli.\n\nWhy: establishes the third demo slice (CLI + config) for screenshot branch.\n\nWhere to look first: src/types.ts — CliOptions and ConfigShape interfaces mirror the eventual args/config split."}

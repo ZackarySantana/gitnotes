@@ -1,0 +1,13 @@
+JSON output mode benchmark (scripting path)
+
+                         cold start   warm 1k   payload bytes
+─────────────────────────────────────────────────────────────
+text formatResult         2.1 ms     890 µs      ~420
+JSON mode (--json)        1.8 ms     640 µs      ~310
+JSON + pretty (indent 2)  2.9 ms     1.1 ms      ~580
+
+What changed: output.ts gains formatJson(); cli.ts routes --json before text formatter.
+
+Why: screenshot demo for Hub "raw vs rendered" toggle — JSON is machine-readable for agents piping stdout.
+
+Look at formatJson() first; ensure trailing newline preserved for unix pipes.

@@ -1,0 +1,20 @@
+Error messages and README polish — guided review for screenshots
+
+Start here: README.md usage section matches printHelp() output from args.ts. Mismatch was the #1 confusion in manual QA.
+
+Tour
+1. cli.ts handleError() — maps ConfigError codes to exit 1/3/4 (see validate.ts)
+2. README.md "Troubleshooting" — documents empty-string optional field fix from commit 26 incident
+3. args.ts warnUnknownFlags() — new in this commit; stderr not stdout
+
+Checklist
+[x] Exit codes documented in README table
+[x] --help mentions --json (added commit 28)
+[x] Examples use fixtures/minimal.json path
+[ ] E2E test still manual — acceptable for demo branch
+
+Risk areas
+- handleError prints to stderr but formatOutput still uses stdout; fine for CLI convention
+- validate.ts empty-string fix is subtle — read the isUnset() helper before copying
+
+Verdict: good demo capstone for Batch 3 CLI slice. Safe for screenshot branch merge.

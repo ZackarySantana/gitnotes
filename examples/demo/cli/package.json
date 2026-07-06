@@ -1,0 +1,7 @@
+{
+  "name": "@gitnotes/demo-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Demo CLI + config loader for GitNotes screenshot branch"
+}

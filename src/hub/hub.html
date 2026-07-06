@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitNotes Hub</title>
+  <link rel="stylesheet" href="hub.css">
+  <script src="hub.js" defer></script>
+</head>
+<body>
+  <aside id="sidebar">
+    <header class="sidebar-header">
+      <h1 class="app-name">GitNotes</h1>
+      <input id="search" type="search" placeholder="Search notes…" autocomplete="off" spellcheck="false">
+      <select id="repo-filter" aria-label="Filter by repository">
+        <option value="">All repositories</option>
+      </select>
+      <div class="tabs" role="tablist">
+        <button id="tab-viewed" class="tab active" type="button" role="tab" aria-selected="true">Viewed</button>
+        <button id="tab-cached" class="tab" type="button" role="tab" aria-selected="false">All cached</button>
+      </div>
+    </header>
+    <div id="entry-list"></div>
+  </aside>
+  <main id="viewer">
+    <div id="empty-state" class="empty-state">
+      <p id="empty-message">Select a note</p>
+    </div>
+    <section id="viewer-section" hidden>
+      <div id="control-bar"></div>
+      <div id="viewer-split" class="viewer-split">
+        <div id="viewer-body" class="viewer-body"></div>
+        <div id="split-divider" class="split-divider" role="separator" aria-orientation="horizontal"
+          aria-label="Resize note and diff panes" tabindex="0" aria-valuemin="0" aria-valuemax="100">
+          <button id="collapse-note" class="split-collapse-btn" type="button"></button>
+          <span class="split-grip" aria-hidden="true"></span>
+          <button id="collapse-diff" class="split-collapse-btn" type="button"></button>
+        </div>
+        <div id="diff-body" class="diff-body"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

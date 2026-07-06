@@ -1,0 +1,22 @@
+{
+  "name": "gitnotes-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chrome extension that surfaces git notes on GitHub commit and PR pages.",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test:envelope": "esbuild src/lib/envelope.ts --bundle --format=esm --outfile=test/.envelope.bundle.mjs && node test/envelope.test.mjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.2.2",
+    "esbuild": "^0.28.1",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.11",
+    "marked": "^18.0.5"
+  }
+}

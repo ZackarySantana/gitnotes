@@ -1,0 +1,1002 @@
+/* GitNotes Hub — GitHub-adjacent styling, light + dark. */
+
+:root {
+  --bg: #ffffff;
+  --bg-sidebar: #f6f8fa;
+  --bg-inset: #f6f8fa;
+  --bg-hover: #eaeef2;
+  --bg-selected: #ddf4ff;
+  --border: #d0d7de;
+  --fg: #1f2328;
+  --fg-muted: #59636e;
+  --accent: #0969da;
+  --badge-bg: #ddf4ff;
+  --badge-fg: #0969da;
+  --btn-bg: #f6f8fa;
+  --btn-hover-bg: #eaeef2;
+  --diff-add-bg: #dafbe1;
+  --diff-add-gutter-bg: #aceebb;
+  --diff-add-fg: #1a7f37;
+  --diff-del-bg: #ffebe9;
+  --diff-del-gutter-bg: #ffcecb;
+  --diff-del-fg: #cf222e;
+  --diff-hunk-bg: #ddf4ff;
+  --diff-empty-bg: #f6f8fa;
+  --intraline-add-bg: #abf2bc;
+  --intraline-del-bg: rgba(255, 129, 130, 0.5);
+  --match-bg: #fff8c5;
+  --match-current-bg: #ffdf5d;
+  --chip-add-bg: #dafbe1;
+  --chip-add-fg: #1a7f37;
+  --chip-del-bg: #ffebe9;
+  --chip-del-fg: #cf222e;
+  --chip-mod-bg: #fff8c5;
+  --chip-mod-fg: #9a6700;
+  --chip-ren-bg: #ddf4ff;
+  --chip-ren-fg: #0969da;
+  --chip-copy-bg: #fbefff;
+  --chip-copy-fg: #8250df;
+  --chip-neutral-bg: #eaeef2;
+  --chip-neutral-fg: #59636e;
+  --overlay-bg: #ffffff;
+  --overlay-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --bg-sidebar: #161b22;
+    --bg-inset: #161b22;
+    --bg-hover: #21262d;
+    --bg-selected: rgba(56, 139, 253, 0.18);
+    --border: #30363d;
+    --fg: #e6edf3;
+    --fg-muted: #8b949e;
+    --accent: #4493f8;
+    --badge-bg: rgba(56, 139, 253, 0.15);
+    --badge-fg: #4493f8;
+    --btn-bg: #21262d;
+    --btn-hover-bg: #30363d;
+    --diff-add-bg: #12261e;
+    --diff-add-gutter-bg: #1c3a29;
+    --diff-add-fg: #3fb950;
+    --diff-del-bg: #25171c;
+    --diff-del-gutter-bg: #3a2228;
+    --diff-del-fg: #f85149;
+    --diff-hunk-bg: rgba(56, 139, 253, 0.1);
+    --diff-empty-bg: #161b22;
+    --intraline-add-bg: rgba(46, 160, 67, 0.4);
+    --intraline-del-bg: rgba(248, 81, 73, 0.4);
+    --match-bg: rgba(187, 128, 9, 0.35);
+    --match-current-bg: rgba(255, 196, 55, 0.65);
+    --chip-add-bg: rgba(46, 160, 67, 0.18);
+    --chip-add-fg: #3fb950;
+    --chip-del-bg: rgba(248, 81, 73, 0.18);
+    --chip-del-fg: #f85149;
+    --chip-mod-bg: rgba(187, 128, 9, 0.18);
+    --chip-mod-fg: #d29922;
+    --chip-ren-bg: rgba(56, 139, 253, 0.18);
+    --chip-ren-fg: #4493f8;
+    --chip-copy-bg: rgba(163, 113, 247, 0.18);
+    --chip-copy-fg: #a371f7;
+    --chip-neutral-bg: #21262d;
+    --chip-neutral-fg: #8b949e;
+    --overlay-bg: #161b22;
+    --overlay-shadow: 0 8px 24px rgba(1, 4, 9, 0.85);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* --- Sidebar ---------------------------------------------------------- */
+
+#sidebar {
+  flex: 0 0 320px;
+  width: 320px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#search {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+}
+
+#search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+#repo-filter {
+  width: 100%;
+  padding: 5px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+}
+
+#repo-filter:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--fg-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+.tab.active {
+  color: var(--fg);
+  font-weight: 600;
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+#entry-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+.day-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 6px 12px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-muted);
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border);
+}
+
+.entry {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+}
+
+.entry:hover {
+  background: var(--bg-hover);
+}
+
+.entry.selected {
+  background: var(--bg-selected);
+  border-left-color: var(--accent);
+}
+
+.entry.never-viewed {
+  opacity: 0.55;
+}
+
+.entry-title {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+.entry-loc {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ref-badge {
+  flex: 0 0 auto;
+  padding: 0 7px;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 10px;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  white-space: nowrap;
+}
+
+/* Note-type chip (html / md / text / raw unknown type) — same shape as the
+   ref badge, muted colorway per type via the shared chip palette. */
+.type-chip {
+  flex: 0 0 auto;
+  padding: 0 7px;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.type-chip-html {
+  background: var(--chip-mod-bg);
+  color: var(--chip-mod-fg);
+}
+
+.type-chip-md {
+  background: var(--chip-ren-bg);
+  color: var(--chip-ren-fg);
+}
+
+.type-chip-text {
+  background: var(--chip-neutral-bg);
+  color: var(--chip-neutral-fg);
+}
+
+.type-chip-other {
+  background: var(--chip-copy-bg);
+  color: var(--chip-copy-fg);
+}
+
+.entry-times {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+.time-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.time-pair svg {
+  flex: 0 0 auto;
+  opacity: 0.8;
+}
+
+.entry-never {
+  opacity: 0.7;
+}
+
+.list-empty {
+  padding: 24px 16px;
+  font-size: 13px;
+  color: var(--fg-muted);
+  text-align: center;
+}
+
+/* --- Entry context menu ------------------------------------------------- */
+
+.context-menu {
+  position: fixed;
+  z-index: 20;
+  min-width: 180px;
+  padding: 4px;
+  background: var(--overlay-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--overlay-shadow);
+}
+
+.context-menu-item {
+  display: block;
+  width: 100%;
+  padding: 5px 8px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--fg);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.context-menu-item:hover,
+.context-menu-item:focus-visible {
+  background: var(--bg-hover);
+}
+
+.context-menu-item:focus-visible {
+  outline: none;
+}
+
+/* --- Viewer ----------------------------------------------------------- */
+
+#viewer {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* display:flex would defeat the hidden attribute's UA display:none. */
+.empty-state[hidden] {
+  display: none;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  color: var(--fg-muted);
+}
+
+.empty-state p {
+  max-width: 420px;
+  font-size: 15px;
+}
+
+#viewer-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#viewer-section[hidden] {
+  display: none;
+}
+
+#control-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-inset);
+}
+
+.control-title {
+  max-width: 40%;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.control-link {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.control-link:hover {
+  text-decoration: underline;
+}
+
+.control-spacer {
+  flex: 1 1 auto;
+}
+
+.control-btn {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  line-height: 20px;
+  color: var(--fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.control-btn:hover {
+  background: var(--btn-hover-bg);
+}
+
+.control-btn[aria-pressed="true"] {
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* --- Note/diff split --------------------------------------------------- */
+
+.viewer-split {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Note pane: height comes from an inline flex-basis (the split ratio). */
+.viewer-body {
+  flex: 0 0 auto;
+  flex-basis: 55%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.viewer-split.note-collapsed .viewer-body {
+  display: none;
+}
+
+.viewer-split.diff-collapsed .viewer-body {
+  flex: 1 1 auto;
+}
+
+.viewer-split.diff-collapsed .diff-body {
+  display: none;
+}
+
+.split-divider {
+  flex: 0 0 auto;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--bg-inset);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  cursor: row-resize;
+  touch-action: none;
+  user-select: none;
+}
+
+.split-divider:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.split-grip {
+  width: 44px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.split-divider:hover .split-grip {
+  background: var(--fg-muted);
+}
+
+.split-collapse-btn {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 100%;
+  padding: 0;
+  font-size: 9px;
+  line-height: 1;
+  font-family: inherit;
+  color: var(--fg-muted);
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.split-collapse-btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--fg);
+}
+
+/* While dragging, iframes must not swallow pointer events (the html-note
+   sandbox iframe would otherwise eat pointermove and stick the drag). */
+body.split-dragging {
+  cursor: row-resize;
+  user-select: none;
+}
+
+body.split-dragging #viewer iframe {
+  pointer-events: none;
+}
+
+.viewer-body iframe {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+}
+
+.viewer-body .raw-view {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.viewer-body .gitnotes-text,
+.viewer-body .gitnotes-markdown,
+.viewer-body > div {
+  padding: 16px;
+  overflow: auto;
+}
+
+.viewer-body .gitnotes-text {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.viewer-body a {
+  color: var(--accent);
+}
+
+.viewer-error,
+.gitnotes-muted {
+  padding: 16px;
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+
+/* --- Diff viewer -------------------------------------------------------- */
+
+.diff-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.diff-status,
+.diff-error {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+
+.diff-summary {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.diff-totals {
+  font-weight: 600;
+}
+
+.diff-count-add {
+  color: var(--diff-add-fg);
+}
+
+.diff-count-del {
+  color: var(--diff-del-fg);
+}
+
+.diff-truncated {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+/* --- Diff toolbar: search + jump-to-file ------------------------------- */
+
+.diff-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.diff-search-input {
+  width: 150px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  line-height: 20px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+}
+
+.diff-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.diff-search-count {
+  min-width: 36px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.diff-jump {
+  max-width: 200px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+.diff-jump:hover {
+  background: var(--btn-hover-bg);
+}
+
+.diff-jump:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* --- Diff search matches ------------------------------------------------ */
+
+mark.diff-match {
+  padding: 0;
+  border-radius: 2px;
+  background: var(--match-bg);
+  color: inherit;
+}
+
+mark.diff-match.diff-match-current {
+  background: var(--match-current-bg);
+  outline: 1px solid color-mix(in srgb, var(--fg) 35%, transparent);
+  /* Keep the current match clear of the sticky file header when scrolling. */
+  scroll-margin-top: 48px;
+  scroll-margin-bottom: 24px;
+}
+
+.diff-files {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 16px 16px;
+}
+
+.diff-file {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  /* Jump-to-file scrolls sections to 'start' — keep a little breathing room. */
+  scroll-margin-top: 8px;
+}
+
+.diff-file-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  background: var(--bg-inset);
+  border-bottom: 1px solid var(--border);
+  border-radius: 6px 6px 0 0;
+}
+
+.diff-file.collapsed .diff-file-header {
+  border-bottom: none;
+  border-radius: 6px;
+}
+
+/* Brief header pulse after jump-to-file; animation wins over the normal
+   background while it runs, then hands back cleanly. */
+.diff-file-header.jump-flash {
+  animation: jump-flash 1.2s ease-out;
+}
+
+@keyframes jump-flash {
+  0%,
+  40% {
+    background-color: var(--bg-selected);
+  }
+  100% {
+    background-color: var(--bg-inset);
+  }
+}
+
+.diff-chevron {
+  flex: 0 0 auto;
+  padding: 0 2px;
+  font-size: 11px;
+  font-family: inherit;
+  color: var(--fg-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.diff-chevron:hover {
+  color: var(--fg);
+}
+
+.diff-chip {
+  flex: 0 0 auto;
+  padding: 0 7px;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.diff-chip-add {
+  background: var(--chip-add-bg);
+  color: var(--chip-add-fg);
+}
+
+.diff-chip-del {
+  background: var(--chip-del-bg);
+  color: var(--chip-del-fg);
+}
+
+.diff-chip-mod {
+  background: var(--chip-mod-bg);
+  color: var(--chip-mod-fg);
+}
+
+.diff-chip-ren {
+  background: var(--chip-ren-bg);
+  color: var(--chip-ren-fg);
+}
+
+.diff-chip-copy {
+  background: var(--chip-copy-bg);
+  color: var(--chip-copy-fg);
+}
+
+.diff-chip-neutral {
+  background: var(--chip-neutral-bg);
+  color: var(--chip-neutral-fg);
+}
+
+.diff-filename {
+  min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+  text-decoration: none;
+}
+
+.diff-filename:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.diff-counts {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.diff-statbar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 1px;
+}
+
+.stat-square {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+}
+
+.stat-square.stat-add {
+  background: var(--diff-add-fg);
+}
+
+.stat-square.stat-del {
+  background: var(--diff-del-fg);
+}
+
+.stat-square.stat-neutral {
+  background: var(--border);
+}
+
+/* Long lines never wrap — they scroll horizontally inside the file body. */
+.diff-file-body {
+  overflow-x: auto;
+}
+
+.diff-nopreview {
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.diff-table td {
+  padding: 0 8px;
+  white-space: pre;
+}
+
+.diff-gutter {
+  width: 1%;
+  min-width: 40px;
+  text-align: right;
+  color: var(--fg-muted);
+  user-select: none;
+}
+
+.diff-code.diff-add {
+  background: var(--diff-add-bg);
+}
+
+.diff-g-add {
+  background: var(--diff-add-gutter-bg);
+}
+
+.diff-code.diff-del {
+  background: var(--diff-del-bg);
+}
+
+.diff-g-del {
+  background: var(--diff-del-gutter-bg);
+}
+
+.diff-code.diff-empty,
+.diff-g-empty {
+  background: var(--diff-empty-bg);
+}
+
+/* Intraline (word-level) tint — stronger than the line background. */
+.intraline-add {
+  background: var(--intraline-add-bg);
+  border-radius: 2px;
+}
+
+.intraline-del {
+  background: var(--intraline-del-bg);
+  border-radius: 2px;
+}
+
+.diff-cell-full {
+  padding: 4px 8px;
+  color: var(--fg-muted);
+}
+
+.diff-cell-full.diff-hunk {
+  background: var(--diff-hunk-bg);
+}
+
+/* --- Diff-target navigation (gitnotes:diff/ links) ------------------------ */
+
+/* Markdown diff links in the note pane navigate the diff pane below — dotted
+   underline + a jump-down affix so they don't read as external links. */
+.gitnotes-diff-link {
+  color: var(--accent);
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+
+.gitnotes-diff-link::after {
+  content: " ↧";
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+/* Navigated line/range. The accent tint is an inset shadow so it layers over
+   the add/del cell backgrounds (both themes) without hiding them; it persists
+   until the next navigation or re-render. The arrival pulse animates from a
+   stronger tint back down to the resting one (no 100% keyframe needed). */
+.diff-target-row {
+  /* Keep the row clear of the sticky file header when scrolled to. */
+  scroll-margin-top: 56px;
+  scroll-margin-bottom: 24px;
+}
+
+.diff-target-row > td {
+  box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--accent) 14%, transparent);
+  animation: diff-target-pulse 1.2s ease-out;
+}
+
+@keyframes diff-target-pulse {
+  0%,
+  35% {
+    box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+}

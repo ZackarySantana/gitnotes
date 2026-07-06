@@ -1,0 +1,306 @@
+/* GitNotes content-script styles.
+ * Everything is namespaced under #gitnotes-root / .gitnotes-* — never style
+ * GitHub's own elements. Colors use GitHub's CSS custom properties with
+ * fallbacks, so dark mode comes for free. */
+
+#gitnotes-root {
+  margin: 16px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fgColor-default, var(--color-fg-default, #1f2328));
+}
+
+.gitnotes-panel {
+  margin: 16px 0;
+  border: 1px solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+  border-radius: 6px;
+  background: var(--bgColor-default, var(--color-canvas-default, #ffffff));
+  overflow: hidden;
+}
+
+#gitnotes-root .gitnotes-panel:first-child {
+  margin-top: 0;
+}
+
+#gitnotes-root .gitnotes-panel:last-child {
+  margin-bottom: 0;
+}
+
+/* Header row: disclosure triangle + badge + title + ref chip */
+.gitnotes-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bgColor-muted, var(--color-canvas-subtle, #f6f8fa));
+  cursor: pointer;
+  user-select: none;
+}
+
+.gitnotes-header:hover {
+  background: var(--bgColor-neutral-muted, var(--color-neutral-subtle, #eaeef2));
+}
+
+.gitnotes-header:focus-visible {
+  outline: 2px solid var(--focus-outlineColor, var(--color-accent-fg, #0969da));
+  outline-offset: -2px;
+}
+
+.gitnotes-triangle {
+  flex: none;
+  width: 1em;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--fgColor-muted, var(--color-fg-muted, #59636e));
+}
+
+.gitnotes-badge {
+  flex: none;
+  padding: 0 7px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--fgColor-muted, var(--color-fg-muted, #59636e));
+  border: 1px solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+  border-radius: 999px;
+  background: var(--bgColor-default, var(--color-canvas-default, #ffffff));
+}
+
+.gitnotes-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gitnotes-ref {
+  flex: none;
+  padding: 0 6px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--fgColor-muted, var(--color-fg-muted, #59636e));
+  background: var(--bgColor-neutral-muted, var(--color-neutral-muted, rgba(175, 184, 193, 0.2)));
+  border-radius: 6px;
+}
+
+/* Body (collapsed by default; populated on first expand) */
+.gitnotes-body {
+  padding: 12px;
+  border-top: 1px solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+}
+
+.gitnotes-body[hidden] {
+  display: none;
+}
+
+.gitnotes-body pre {
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--bgColor-muted, var(--color-canvas-subtle, #f6f8fa));
+  border-radius: 6px;
+}
+
+.gitnotes-body pre:last-child {
+  margin-bottom: 0;
+}
+
+/* Rendered-markdown basics — modest, GitHub-ish */
+.gitnotes-body p,
+.gitnotes-body ul,
+.gitnotes-body ol,
+.gitnotes-body blockquote,
+.gitnotes-body table {
+  margin: 0 0 8px;
+}
+
+.gitnotes-body > :last-child {
+  margin-bottom: 0;
+}
+
+.gitnotes-body h1,
+.gitnotes-body h2,
+.gitnotes-body h3,
+.gitnotes-body h4,
+.gitnotes-body h5,
+.gitnotes-body h6 {
+  margin: 16px 0 8px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.gitnotes-body h1:first-child,
+.gitnotes-body h2:first-child,
+.gitnotes-body h3:first-child,
+.gitnotes-body h4:first-child,
+.gitnotes-body h5:first-child,
+.gitnotes-body h6:first-child {
+  margin-top: 0;
+}
+
+.gitnotes-body h1 {
+  font-size: 1.4em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted, #d8dee4));
+}
+
+.gitnotes-body h2 {
+  font-size: 1.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted, #d8dee4));
+}
+
+.gitnotes-body h3 {
+  font-size: 1.1em;
+}
+
+.gitnotes-body h4,
+.gitnotes-body h5,
+.gitnotes-body h6 {
+  font-size: 1em;
+}
+
+.gitnotes-body ul,
+.gitnotes-body ol {
+  padding-left: 2em;
+}
+
+.gitnotes-body li + li {
+  margin-top: 2px;
+}
+
+.gitnotes-body code {
+  padding: 0.2em 0.4em;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 85%;
+  background: var(--bgColor-neutral-muted, var(--color-neutral-muted, rgba(175, 184, 193, 0.2)));
+  border-radius: 6px;
+}
+
+.gitnotes-body pre code {
+  padding: 0;
+  font-size: 100%;
+  background: transparent;
+  border-radius: 0;
+}
+
+.gitnotes-body blockquote {
+  padding: 0 1em;
+  color: var(--fgColor-muted, var(--color-fg-muted, #59636e));
+  border-left: 0.25em solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+}
+
+.gitnotes-body a {
+  color: var(--fgColor-accent, var(--color-accent-fg, #0969da));
+  text-decoration: none;
+}
+
+.gitnotes-body a:hover {
+  text-decoration: underline;
+}
+
+.gitnotes-body img {
+  max-width: 100%;
+}
+
+/* "Open dynamic note" chip (html notes) — subtle bordered pill */
+.gitnotes-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--fgColor-default, var(--color-fg-default, #1f2328));
+  background: var(--bgColor-muted, var(--color-canvas-subtle, #f6f8fa));
+  border: 1px solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.gitnotes-chip:hover:not([disabled]) {
+  background: var(--bgColor-neutral-muted, var(--color-neutral-subtle, #eaeef2));
+  border-color: var(--borderColor-emphasis, var(--color-border-default, #afb8c1));
+}
+
+.gitnotes-chip[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Muted single-line notice for non-fatal errors from the worker */
+.gitnotes-notice {
+  margin: 4px 0;
+  font-size: 12px;
+  color: var(--fgColor-muted, var(--color-fg-muted, #59636e));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gitnotes-hub-link {
+  margin-left: auto;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 18px;
+  border: 1px solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+  border-radius: 999px;
+  background: var(--bgColor-default, var(--color-canvas-default, #ffffff));
+  color: var(--fgColor-muted, var(--color-fg-muted, #656d76));
+  cursor: pointer;
+}
+
+.gitnotes-hub-link:hover {
+  color: var(--fgColor-accent, var(--color-accent-fg, #0969da));
+  border-color: var(--fgColor-accent, var(--color-accent-fg, #0969da));
+}
+
+/* Note badge next to commit titles on commit-list and PR pages — a quiet
+ * little pill that mustn't compete with GitHub's own row content. */
+.gitnotes-badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  padding: 0 6px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  vertical-align: middle;
+  white-space: nowrap;
+  color: var(--fgColor-muted, var(--color-fg-muted, #656d76));
+  background: var(--bgColor-default, var(--color-canvas-default, #ffffff));
+  border: 1px solid var(--borderColor-default, var(--color-border-default, #d0d7de));
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.gitnotes-badge-chip svg {
+  flex: none;
+}
+
+.gitnotes-badge-chip:hover {
+  color: var(--fgColor-accent, var(--color-accent-fg, #0969da));
+  border-color: var(--fgColor-accent, var(--color-accent-fg, #0969da));
+}
+
+.gitnotes-badge-chip:focus-visible {
+  outline: 2px solid var(--focus-outlineColor, var(--color-accent-fg, #0969da));
+  outline-offset: 1px;
+}

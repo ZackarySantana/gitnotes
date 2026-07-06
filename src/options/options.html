@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GitNotes — Options</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #59636e;
+      --border: #d1d9e0;
+      --accent: #0969da;
+      --accent-fg: #ffffff;
+      --code-bg: #f6f8fa;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #f0f6fc;
+        --muted: #9198a1;
+        --border: #3d444d;
+        --accent: #4493f8;
+        --accent-fg: #0d1117;
+        --code-bg: #151b23;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 1.25rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    input[type="password"] {
+      flex: 1;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--fg);
+      font: inherit;
+    }
+    input[type="password"]:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+      border-color: transparent;
+    }
+    button {
+      padding: 0.45rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--accent);
+      color: var(--accent-fg);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(1.1); }
+    #status {
+      min-height: 1.5em;
+      margin: 0.5rem 0 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .help {
+      margin-top: 1.5rem;
+      color: var(--muted);
+    }
+    .help p { margin: 0 0 0.75rem; }
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GitNotes</h1>
+
+    <label for="token">GitHub token</label>
+    <div class="row">
+      <input type="password" id="token" autocomplete="off"
+             placeholder="github_pat_… (optional)" />
+      <button id="save">Save</button>
+    </div>
+    <p id="status" role="status"></p>
+
+    <div class="help">
+      <p>
+        Without a token, GitNotes works on public repositories at GitHub's
+        unauthenticated limit of 60 requests/hour. A fine-grained personal
+        access token with the repository <strong>Contents (read)</strong>
+        permission raises that to 5,000 requests/hour and enables private
+        repositories. The token is stored only in this extension's storage
+        and is sent only to the GitHub API.
+      </p>
+      <p>
+        Note: git notes are not pushed by default. For the extension to see
+        them, push them to GitHub with
+        <code>git push origin 'refs/notes/*'</code>.
+      </p>
+    </div>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

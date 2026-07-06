@@ -8,11 +8,19 @@ export class RequestCoalescer<K, V> {
     const existing = this.inFlight.get(key);
     if (existing) return existing;
 
-    const promise = fetcher().finally(() => {
-      this.inFlight.delete(key);
+    let promise: InFlight<V>;
+    try {
+      promise = Promise.resolve(fetcher());
+    } catch (err) {
+      throw err;
+    }
+    const tracked = promise.finally(() => {
+      if (this.inFlight.get(key) === tracked) {
+        this.inFlight.delete(key);
+      }
     });
-    this.inFlight.set(key, promise);
-    return promise;
+    this.inFlight.set(key, tracked);
+    return tracked;
   }
 
   pendingCount(): number {

@@ -1,4 +1,4 @@
-/** Human-readable output formatting for demo CLI results. */
+/** Output formatting — text, verbose, and JSON modes. */
 
 import type { ConfigShape } from './types.js';
 
@@ -12,6 +12,15 @@ const MAX_VALUE_LEN = 80;
 
 function truncate(value: string): string {
   return value.length > MAX_VALUE_LEN ? value.slice(0, 77) + '...' : value;
+}
+
+export function formatJson(payload: ResultPayload, pretty = false): string {
+  const body = {
+    command: payload.command,
+    ok: payload.ok,
+    config: payload.config,
+  };
+  return JSON.stringify(body, null, pretty ? 2 : undefined) + '\n';
 }
 
 export function formatResult(payload: ResultPayload, verbose = false): string {

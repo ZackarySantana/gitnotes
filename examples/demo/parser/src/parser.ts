@@ -1,4 +1,5 @@
 import { Tokenizer } from './tokenizer';
+import { err, type ParseError } from './errors';
 import { GITNOTES_VERSION, type Envelope, type ParseResult } from './types';
 
 const skipCache = new WeakMap<Tokenizer, Map<string, number>>();
@@ -7,18 +8,18 @@ export function parseEnvelope(raw: string): ParseResult<Envelope> {
   const tok = new Tokenizer(raw);
   const first = tok.consume();
   if (first.value !== '{') {
-    return { ok: false, error: 'expected opening brace' };
+    return fail('UNEXPECTED_TOKEN', 'expected opening brace', first);
   }
 
   const titleKey = tok.consume();
   if (titleKey.kind !== 'text' && titleKey.value !== '"') {
-    return { ok: false, error: 'expected title key first' };
+    return fail('MISSING_TITLE', 'expected title key first', titleKey);
   }
 
   skipToCached(tok, 'gitnotes');
   const versionTok = tok.consume();
   if (versionTok.value !== String(GITNOTES_VERSION)) {
-    return { ok: false, error: `unsupported gitnotes version` };
+    return fail('BAD_VERSION', `unsupported gitnotes version`, versionTok);
   }
 
   skipToCached(tok, 'body');
@@ -31,6 +32,18 @@ export function parseEnvelope(raw: string): ParseResult<Envelope> {
       body: '',
     },
   };
+}
+
+function fail(
+  code: ParseError['code'],
+  message: string,
+  tok: { line: number; column: number },
+): ParseResult<Envelope> {
+  return { ok: false, error: formatInline(err(code, message, tok)) };
+}
+
+function formatInline(e: ParseError): string {
+  return `[${e.code}] ${e.message}`;
 }
 
 function skipToCached(tok: Tokenizer, needle: string): void {

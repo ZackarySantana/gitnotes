@@ -1,58 +1,42 @@
 # GitNotes
 
-Chrome extension that surfaces `git notes` on GitHub commit pages. GitHub hosts
-pushed `refs/notes/*` refs but stopped rendering them — GitNotes fetches them
-via the GitHub API and renders them in place.
+A Chrome extension that shows `git notes` on GitHub.
 
-## Privacy
+Git has a built-in way to attach extra information to commits: [git notes](https://git-scm.com/docs/git-notes). GitHub stores them when you push them, but stopped displaying them years ago. So a useful place for review reports, benchmarks, and context ended up invisible. GitNotes brings them back: it fetches notes through the GitHub API and shows them right where you browse.
 
-GitNotes stores its cache/history in your browser and only sends API requests to GitHub. See the full policy in [PRIVACY.md](PRIVACY.md).
+Notes can be plain text, markdown, or full interactive HTML pages that render safely in a sandboxed viewer, so a note can be anything from a one-line remark to a guided tour of a change with charts and links into the diff.
 
-See [PLAN.md](PLAN.md) for the full design (schema, Hub, roadmap) and
-[skills/gitnotes/SKILL.md](skills/gitnotes/SKILL.md) for the agent skill that
-writes notes.
+## Install
 
-## Build
+[Chrome Web Store](TBA) (link coming soon, pending review)
 
-```bash
-npm install
-npm run build        # bundles to dist/
-npm run watch        # rebuild on change
-```
+## What it looks like
 
-## Load in Chrome
+Commits with notes get a badge on pull request and commit list pages:
 
-1. `chrome://extensions` → enable **Developer mode**
-2. **Load unpacked** → select the `dist/` directory
-3. Optional: open the extension's **Options** and paste a fine-grained PAT
-   (repository *Contents: read*) — 5000 req/hr instead of 60, and private
-   repos.
+![Note badges on a pull request](screenshots/pr-page.png)
 
-Then visit a commit that has a note, e.g. a `git/git` commit annotated in
-`refs/notes/amlog`:
-<https://github.com/git/git/commit/000023961a0c02d6e21dc51ea3484ff71abf1c74>
+Clicking a note opens the Hub, where the note renders above the commit's diff. Notes can be fully dynamic, like this interactive benchmark report:
 
-## Publishing notes so the extension can see them
+![An interactive HTML note in the Hub](screenshots/hub.png)
+
+Notes can also link directly into the diff, jumping to and highlighting specific files and lines:
+
+![A guided tour note with links into the diff](screenshots/hotlinks.png)
+
+## Writing notes
+
+Notes are plain git. Attach one to a commit and push it:
 
 ```bash
 git notes add -m "hello" <sha>
 git push origin 'refs/notes/*'
 ```
 
-## Tests
+## Privacy
 
-```bash
-npm run typecheck            # tsc, strict
-npm run test:envelope        # schema-v1 parser unit tests (Node, no framework)
-node scripts/live-test-api.mjs   # live pipeline test against git/git (network)
-```
+GitNotes talks only to the GitHub API and stores everything locally in your browser. See [PRIVACY.md](PRIVACY.md).
 
-## Layout
+## License
 
-```
-src/manifest.json        MV3 manifest
-src/background/          service worker: API calls, IndexedDB cache, messaging
-src/content/             github.com content script: SHA detection, note panels
-src/lib/                 shared: contracts, envelope parser, renderers, API client, db
-src/options/             options page (PAT)
-```
+[MIT](LICENSE)

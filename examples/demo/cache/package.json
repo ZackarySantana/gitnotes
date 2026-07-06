@@ -1,0 +1,14 @@
+{
+  "name": "@gitnotes/demo-cache",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "bench": "node --import tsx bench/run.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "vitest": "^2.0.0"
+  }
+}
